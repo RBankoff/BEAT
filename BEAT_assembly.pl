@@ -1,11 +1,12 @@
 #!/usr/bin/perl -w
 use FileHandle;
 use Getopt::Long;
+use List::MoreUtils qw(uniq);
 
-###################
-## BEAT_Complete ##
-## Mod: 8/4/2015 ##
-###################
+#####################
+##  BEAT_Complete  ##
+## Mod: 02/25/2016 ##
+#####################
 
 ############################
 ##  Hard-coded arguments  ##
@@ -34,19 +35,20 @@ my $usr = '';
 my $job_name = '';
 my $run_local = '';
 my $mode = '';
+my $list = '';
+my $species = '';
 
 #declare optional flags (defaults are preset if no input is registered)
 my $samtools_qflag = '';
 my $e_value = '';
 my $perc_identity = '';
-
+#my @SRs;
 
 #load flags
 GetOptions(
 	"query=s{$numQ}" => \@query, 
 	"usr=s" => \$usr, 
 	"first" => \$first, 
-	"sr=s{$numSR}" => \@SRs,  
 	"chrom=s{$numQ}" => \@chrom, 
 	"ref=s" => \$ref, 
 	"config=s" => \$config, 
@@ -56,8 +58,28 @@ GetOptions(
 	"samtools_qflag=s" => \$samtools_qflag,
 	"e_value=s" => \$e_value,
 	"perc_identity=s" => \$perc_identity,
-	"job_name=s" => \$job_name
+	"job_name=s" => \$job_name,
+	"list=s" => \$list,
+	"sr=s{$numSR}" => \@SRs,
+	"species=s" => \$species
 );
+
+=pod
+if($list){
+	open (LIST_FILE, "<", $list) or die "Couldn't open list file $list, $!\n";
+	while (my $line = <LIST_FILE>){
+		chomp $line;
+		#print "LINE: $line\n";
+		push @SRs, $line;
+	}
+	close LIST_FILE;
+	foreach $S(@SRs){
+                my $presize = qx(ls -l $S);
+		my $size = (split (/\t/, $presize))[5]; 
+		#print "Size: $size\n";
+        }
+}
+=cut
 
 ################################
 ## Global variable initiation ##
@@ -100,19 +122,18 @@ my %params = map { $_ => 1 }@odds;
 &DEPENDENCIES();
 
 sub DEPENDENCIES{
+=pod
 	my @dependencies = ('samtools', 'bwa', 'qsub', 'blastn', 'makeblastdb');
 	foreach $d(@dependencies){
 		my $check = qx(which $d);
 		if ($check =~ /^\/usr\/bin\/which:\sno/){
 			if ($d =~ m/blastn|makeblastdb/){
-				`module load blast+`;
 				$check = qx(which $d);
 				if ($check =~ /^\/usr\/bin\/which:\sno/){
 					die "Couldn't load module blast+. Check that it is installed, and try manually loading the module\n\n";
 				}
 			}
 			else{
-				`module load $d`;
 				$check = qx(which $d);
                                 if ($check =~ /^\/usr\/bin\/which:\sno/){
                                         die "Couldn't load module $d. Check that it is installed, and try manually loading the module\n\n";
@@ -120,10 +141,11 @@ sub DEPENDENCIES{
 			}
 		}
 	}
+=cut
 	
 	unless($config){
                 unless ($run_local){
-                        die "No config flag given. To run locally, use the --run_local flag\n\n";
+                        die "No config flag given. To run locally, use the --run_local flag[Ed note: not implemented in 1.0.0, you must use a queuing manager]\n\n";
                 }
         }
 	open (CONFIG, "<", $config) or die "Couldn't open config file, $!\n";
@@ -137,7 +159,7 @@ sub DEPENDENCIES{
 	#check if user has entered valid ID if using a qsub system (pipeline will break otherwise)
 	if ($type =~ m/qsub/i){
 	        unless ($usr =~	/[A-Z0-9]/i){
-                        die "No	valid user given for \"-usr\" flag, necessary to run as	a qsubbing pipeline\n\n";
+                        die "No	valid user given for \"-usr\" flag, necessary to run as	a queue managed pipeline\n\n";
                 }
         }
 	
@@ -151,6 +173,9 @@ sub DEPENDENCIES{
         unless ($ref =~ m/[A-Z].*/i){
                 die "No reference provided!\n\n";
         }
+	unless (-e $ref){
+		die "Reference file $ref not found at path given.\n";
+	}
 	my $ref_samtools_index = $ref . ".fai";
         my $ref_bwa_index = $ref . ".bwt";
         unless (-e $ref_samtools_index){
@@ -165,6 +190,13 @@ sub DEPENDENCIES{
                 if ($type =~ m/qsub/){
                         `qsub $indexing_script`;
                 }
+
+#Example of how other queue-managing scripts should be inserted into the source code
+=pod
+		elsif ($type =~ m/other_format/i){
+			`other_format $indexing_script`;
+		}
+=cut
                 push @discard, $indexing_script;
         }
 
@@ -192,6 +224,7 @@ sub DEPENDENCIES{
 		&COMPLETE();
 	}
 }
+
 sub COMPLETE{
 	my @pre_merged;
 	my $SR_counter = 0;
@@ -202,19 +235,20 @@ sub COMPLETE{
 
 	foreach $O(@odds){
 		my $SRQ;
-		if ($O =~ m/.gz$/){
-			$SRQ = $O =~ s/.gz/.map_script/;
-		}
-		else{
-			$SRQ = $O =~ s/.fastq/.map_script/;
-		} 
+		$SRQ = $O;
+		$SRQ .= ".map_script";
+		print "SRQ: $SRQ\n";
 		my $local_bam_base = (split(/\./, $O))[0];
+		my $unsorted = $local_bam_base;
+		$unsorted .= ".bam";
                 my $local_bam_sorted_base = $local_bam_base . ".sorted";
 		my $local_bam_sorted = $local_bam_sorted_base . ".bam";
 		open (MAP_MAKER, ">", $SRQ) or die "Couldn't make mapping script $SRQ, $!\n";
 		print MAP_MAKER "$config_header\n";
 		print MAP_MAKER "module load samtools\nmodule load bwa\n";
-		print MAP_MAKER "bwa mem $ref $O $evens[$SR_counter] | samtools view -Sb -F4 -q $real_samtools_q - | samtools sort -o $local_bam_sorted_base -";
+		print MAP_MAKER "bwa mem $ref $O $evens[$SR_counter] | samtools view -Sb -F4 -q $real_samtools_q -o $unsorted -\n"; 
+		print MAP_MAKER "samtools sort $unsorted $local_bam_sorted_base\n";
+		print MAP_MAKER "samtools index $local_bam_sorted\n";
 		push @discard, $SRQ;
 		push @pre_merged, $local_bam_sorted;
 		if ($type =~ m/qsub/){
@@ -231,42 +265,39 @@ sub COMPLETE{
                 	}
        		}
 	}
-	
-	###########################
-	###  DUPLICATE REMOVAL  ###
-	###########################
-		
-	#gotta figure out cross platform (non-aliased) calling of the old samtools...
 
 	############################
 	###   MERGING/INDEXING   ###
 	############################
-
-	my $all_bams = join(' ', @pre_merged);
-	my $merging_script = $job_name . ".merge_script";
-	my $merged_name = $job_name . ".merged.bam";
-	open (MERGING_SCRIPT, ">", $merging_script) or die "Couldn't make merging script $merging_script, $!\n";
-	print MERGING_SCRIPT "$config_header\n";
-	print MERGING_SCRIPT "module load samtools\n";
-	print MERGING_SCRIPT "samtools merge $merged_name $all_bams\n";
-	print MERGING_SCRIPT "samtools index $merged_name\n";
-	push @discard, $merging_script;
+	unless ($numSR == 2){
+		my $all_bams = join(' ', @pre_merged);
+		my $merging_script = $job_name . ".merge_script";
+		my $merged_name = $job_name . ".merged.bam";
+		open (MERGING_SCRIPT, ">", $merging_script) or die "Couldn't make merging script $merging_script, $!\n";
+		print MERGING_SCRIPT "$config_header\n";
+		print MERGING_SCRIPT "module load samtools\n";
+		print MERGING_SCRIPT "samtools merge $merged_name $all_bams\n";
+		print MERGING_SCRIPT "samtools index $merged_name\n";
+		push @discard, $merging_script;
 	
-	if ($type =~ m/qsub/){
-		`qsub $merging_script`;
-                my $qstatchecker = qx(qstat -u $usr | wc -l);
-                if ($qstatchecker > 6){
-                        while($qstatchecker > 6){
-                                $qstatchecker = qx(qstat -u $usr | wc -l);
-                                sleep(1);
-                        }
-                }
-        }
+		if ($type =~ m/qsub/){
+			`qsub $merging_script`;
+		        my $qstatchecker = qx(qstat -u $usr | wc -l);
+		        if ($qstatchecker > 6){
+		                while($qstatchecker > 6){
+		                        $qstatchecker = qx(qstat -u $usr | wc -l);
+		                        sleep(1);
+		                }
+		        }
+		}
+	}
 	
-	print "Assembly completed. To query your data further, use \"BEAT_consensus.pl\" or \"BEAT_batch.pl\" \n";
+	print "Assembly completed. To query your data further, use \"BEAT consensus\". Goodbye!\n";
+=pod
         foreach $disc(@discard){
                 `rm $disc`;
         }
+=cut
 	exit;
 }
 
@@ -305,7 +336,6 @@ sub FAST_TIDY{
 		}
 	}
 	&FAST_BLAST();
-
 }
 
 
@@ -393,15 +423,17 @@ sub FAST_BLAST{
 		}
 		my @splitter = split (/\./, $revb1);
 		foreach $ln(@localnames){
-			if ($splitter[3] =~ /$ln/){
+			if ($splitter[2] =~ /$ln/){
 				my $reverse_output = $ln . ".REVERSE.fastq";
 				`cat $revb1 >> $reverse_output `;
 				push @reverse_outs, $reverse_output;
 				last;
 			}
+=pod
 			else{
 				shift @localnames;
 			}
+=cut
 		}
 
 	}
@@ -414,15 +446,17 @@ sub FAST_BLAST{
 		}
 		my @splitter = split (/\./, $blf1);
 		foreach $ln(@localnames){
-			if ($splitter[3] =~ /$ln/){
+			if ($splitter[2] =~ /$ln/){
 				my $forward_output = $ln . ".FORWARD.fastq";
 				`cat $blf1 >> $forward_output `;
 				push @forward_outs, $forward_output;
 				last;
 			}
+=pod
 			else{
 				shift @localnames;
 			}
+=cut
 		}
 	}
 
@@ -431,24 +465,86 @@ sub FAST_BLAST{
 
 sub FAST_MAP{
 
-	my @localnames = @forward_outs;
+	my @localnames = uniq @forward_outs;
+	my @local_reverse = uniq @reverse_outs;
 	my $finalcounter = 0;
-
+	my @local_list;
+	my @master_bams;
 	foreach $l(@localnames){
 		my $local_bam_base = (split(/\./, $l))[0];
-		my $local_bam_sorted = $local_bam_base . ".sorted";
-		my $local_chr = substr($chrom[$finalcounter], 3);
+		my $local_bam = $local_bam_base . ".bam";
+		my $local_bam_presorted = $local_bam_base . ".sorted";
+		my $local_bam_sorted = $local_bam_presorted . ".bam";
+#		my $local_bam_rmdupd = $local_bam_presorted . ".rmdup.bam";
+		push @master_bams, $local_bam_sorted;
+
+		#my $local_chr = $chrom[$finalcounter];
 		my $local_script_name = $l . ".bwa_script";
 		open (BWA, ">", $local_script_name) or die "Couldn't open bwa script $local_script_name, $!\n";
-		print BWA "$config_header";
+		print BWA "$config_header\n";
 		print BWA "module load bwa\nmodule load samtools\n";
-		print BWA "bwa mem $ref $l $reverse_outs[$finalcounter] | samtools view -Sb -F4 -q $real_samtools_q - | samtools sort -o $local_bam_sorted -";
+		print BWA "bwa mem $ref $l $local_reverse[$finalcounter] | samtools view -Sb -F4 -q $real_samtools_q - >$local_bam \n"; 
+		print BWA "samtools sort $local_bam $local_bam_presorted \n";
+#		print BWA "samtools rmdup $local_bam_sorted $local_bam_rmdupd \n";
+		print BWA "samtools index $local_bam_sorted \n";
+		close BWA;
 		push @discard, $local_script_name;
 		$finalcounter++;
+
+		if ($type =~ m/qsub/){
+			`qsub $local_script_name`;
+		}
+		
+		my $local_list_holder = qx(perl Entrez_fetch.pl $local_bam_base $species);
+		chomp $local_list_holder;
+		my @fixer = split(/\t/, $local_list_holder);
+		$fixer[0] .= ".fasta";
+		my $ready_for_consensus = join("\t", @fixer);
+		my $OUT_LIST_FOR_CONSENSUS = $local_bam_base . ".consensus_list";
+		open (OUT_LIST_FOR_CONSENSUS, ">", $OUT_LIST_FOR_CONSENSUS) or die "Couldn't make out list for consensus $OUT_LIST_FOR_CONSENSUS, $!\n";
+		print OUT_LIST_FOR_CONSENSUS "$ready_for_consensus\n";
+		close OUT_LIST_FOR_CONSENSUS;
+		push @local_list, $OUT_LIST_FOR_CONSENSUS;
 	}
-	print "Assembly completed.\n";
+
+	if($type =~ m/qsub/){
+		my $qstatchecker = qx(qstat -u $usr | wc -l);
+		if ($qstatchecker > 6){
+			while($qstatchecker > 6){
+				$qstatchecker = qx(qstat -u $usr | wc -l);
+				sleep(1);
+			}
+		}
+	}
+
+	#print "Assembly completed.\n";
+	my $consensus_counter = 0;
+	foreach $master(@master_bams){
+		my $base = (split(/\./, $master))[0];
+		my $consensus_script = $base . ".consensus_script";
+		open (CONSENSUS_SCRIPT, ">", $consensus_script) or die "Couldn't make consensus script $consensus_script, $!\n";
+		print CONSENSUS_SCRIPT "$config_header\n";
+		print CONSENSUS_SCRIPT "perl BEAT_consensus.pl $local_list[$consensus_counter] $master $base $ref \n";
+		$consensus_counter++;		
+		if ($type =~ m/qsub/){
+			`qsub $consensus_script`;
+		}
+	}
+	
+	if($type =~ m/qsub/){
+		my $qstatchecker = qx(qstat -u $usr | wc -l);
+		if ($qstatchecker > 6){
+			while($qstatchecker > 6){
+				$qstatchecker = qx(qstat -u $usr | wc -l);
+				sleep(1);
+			}
+		}
+	}
+	
+=pod
 	foreach $disc(@discard){
 		`rm $disc`;
 	}
+=cut
 	exit;
 }

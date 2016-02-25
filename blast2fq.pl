@@ -18,19 +18,23 @@ unless (@ARGV==5) {
 my $check = 0;
 my @hits;
 open IN, "$blast";
-while (<IN>) {
-	my $line = $_;
+my $switch = 0;
+while (my $line = <IN>) {
 	chomp $line;
 	if ($line =~ "Sequences producing significant alignments") {
-		my $nex = <IN>;
-		$nex = <IN>;
-		until ($nex =~ /^$/) {
-			$nex = <IN>;
-			chomp $nex;
-			$nex =~ s/^\s+//;
-			push @hits, $nex;
-		}
+		$switch = 1;
 	}
+	if ($switch == 1){
+		if($line !~ m/^>/){
+			if ($line !~ "Sequences producing significant alignments"){
+				print "LINE: $line\n";
+				push @hits, $line;
+			}
+		}
+		else{
+			$switch = 0;
+		}
+	}		
 }
 
 
@@ -38,17 +42,20 @@ open IDS, ">$out.IDs.txt";
 for my $hit (@hits) {
 	chomp $hit;
 	unless ($hit =~ /^$/) {
-		my $id = (split(/\s{1,}/, $hit))[0];
-		$id = $id . " " . (split(/\s{1,}/, $hit))[1];
-		my $score = (split(/\s{1,}/, $hit))[3];
+		print "HIT: $hit\n";
+		my $id = (split(/\s{1,}/, $hit))[1];
+		my $id2 = (split(/\#/, $id))[0] ;
+		print "ID: $id2\n"; 
+		my $score = (split(/\s{1,}/, $hit))[2];
+		print "SCORE: $score\n";
 		if ($score >= $min) {
-			print IDS "$id\n";
+			print IDS "$id2\n";
 		}
 	}
 }
 close IDS;
 
-`perl ./fqselect3.pl $fastq $out.IDs.txt $out.originalReads.fastq `;
-`perl ./fqselect3.pl $flip $out.IDs.txt $out.flipReads.fastq`;
+`perl ./fqselect4.pl $fastq $out.IDs.txt $out.originalReads.fastq `;
+`perl ./fqselect4.pl $flip $out.IDs.txt $out.flipReads.fastq`;
 
 
