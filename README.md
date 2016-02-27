@@ -205,13 +205,13 @@ a text-based format for storing read sequences along with their PHRED-formatted 
 
 Example:
 
-`@SEQ_ID
+`@SEQ_ID`
 
-ACGTCCTGACACTGATGTATGCCACAATGTAACGTCCTGACACTGATGTATGCCACAATGTA
+`ACGTCCTGACACTGATGTATGCCACAATGTAACGTCCTGACACTGATGTATGCCACAATGTA`
 
-+
+`+`
 
-!!''(%%%+*******!!$$CCGF928))))))'''!*.15HHHHHH(H!!!$%$$!'',.$`
+`!!''(%%%+*******!!$$CCGF928))))))'''!*.15HHHHHH(H!!!$%$$!'',.$`
 
 ###.qsub: 
 A generic suffix to denote a script that is meant to be queued by the TORQUE Resource Management system.
@@ -219,8 +219,11 @@ A generic suffix to denote a script that is meant to be queued by the TORQUE Res
 Example:
 
 `#PBS -l walltime=4:00:00`
+
 `#PBS -l nodes=1:ppn=1`
+
 `#PBS -l pmem=2gb`
+
 `cd $PBS_O_WORKDIR`
 
 ###.sam: 
