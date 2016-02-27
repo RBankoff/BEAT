@@ -101,6 +101,7 @@ Included in the BEAT github repository are a set of example files to demonstrate
 `perl BEAT_consensus.pl [1] [2] [3] [4]`
 
 ###Arguments must be given in order
+
 ORDER|NAME|EXAMPLE|DESCRIPTION
 :---:|:--------:|:------:|:--------------:
 1|Listfile|List.txt|list file in format specified in format section below	
@@ -253,6 +254,7 @@ FASTA-formatted consensus for specified query/region
 The position-wise mapping scores from samtools mpileup used by BEAT_consensus to extract targeted consensus sequences.
 
 Example:
+
 Ref name|Ref Coord|Ref ID|Read Depth|Read ID|Read Quality
 :----------:|:------:|:---:|:---:|:---------:|:-----------:
 scaffold_774	72731	G	9	..,,,,,,.	FFHHH@HH6
