@@ -153,7 +153,7 @@ Order|Name|Example
 
 ##Streamline_formatDB.pl
 ###Purpose:
-Subscript used to batch-process the creation of BLAST+ databases with the amkeblastdb utility.
+Subscript used to batch-process the creation of BLAST+ databases with the makeblastdb utility.
 ###Usage:
 `perl Streamline_FormatDB.pl [name of file to be databased]`
 
