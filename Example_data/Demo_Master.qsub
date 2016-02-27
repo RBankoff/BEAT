@@ -1,0 +1,5 @@
+#PBS -l walltime=4:00:00
+#PBS -l nodes=1:ppn=1
+#PBS -l pmem=2gb
+cd $PBS_O_WORKDIR
+perl BEAT_assembly.pl 1 2 -query TMC1.fasta -sr s_1_1.demo.spiked.fastq s_1_2.demo.spiked.fastq -usr [USERNAME] -chrom 9 -ref Chr9_hg38.fasta -config Qsub_template.qsub -mode fast -type qsub -job_name Demo -species Homo -first
