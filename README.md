@@ -233,7 +233,7 @@ Samtools alignment specification, see (https://samtools.github.io/hts-specs/SAMv
 ###Listfile format:
 The listfile for BEAT_consensus [arg1] is an internal file which can be generated automatically by using the Entrez_fetch.pl script (see above), or can be created manually with the following format, where each field is separated by a tab:
 Field 1|Field 2|Field 3|Field 4
-:---------:|:-------:|:---------:|:---------:|
+:---------:|:-------:|:---------:|:---------:
 name of .gbl file|chromosome/scaffold name|start coordinates along chromosome/scaffold|end coordinates along chromosome/scaffold
 
 ####NOTE: for “targeted” track jobs, input 1 for field [3] and the length of the sequence for field [4].
