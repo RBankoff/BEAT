@@ -31,8 +31,7 @@ None of the scripts need root access to run, but most of them require the instal
 
 BEAT checks that these programs are installed and in the user's path before executing; if they are not, BEAT will throw an error to the effect of "edirect not found" and exit. It is highly recommended that users add the directory containing BEAT to their path. This can be accomplished with the following commands in a bash terminal:
 
-`PATH = $PATH:~/Downloads/BEAT_v1_0_0/`
-`export PATH`
+`PATH = $PATH:~/Downloads/BEAT_v1_0_0/; export PATH`
 
 ###################################
 # Compatibility and Optimization #
