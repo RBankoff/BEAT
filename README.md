@@ -34,6 +34,14 @@ BEAT checks that these programs are installed and in the user's path before exec
 `PATH = $PATH:~/Downloads/BEAT_v1_0_0/`
 `export PATH`
 
+###################################
+# Compatibility and Optimization #
+###################################
+
+The BEAT suite is optimized for use on a linux cluster running the TORQUE Resource Manager (http://www.adaptivecomputing.com/products/open-source/torque/), but it can be run on a multithreading-capable local linux or unix system as well. To determine if you are using a system with the TORQUE Resource Manager installed, enter the command "qstat" in the terminal; if a list of running and queued jobs is returned, you are. This package is accompanied by a template file ("template_qsub.qsub"), which you may use, modify or replace to alter the default settings of each subdivided job. If you would like to adapt BEAT for other resource management systems, there is a built-in switch called "$type" in BEAT_MAIN.pl which has only one option at present ("qsub"); adding another option that mimicks the use of "$type" along with a system-specific template file in place of "template_qsub.qsub" should enable relatively easy conversion.   
+
+BEAT is designed to intake FASTQ-formatted paired-end reads of indeterminate length, but a key strength of the pipeline is its ability to paralellize jobs to maximize efficiency. We therefore recommend that you use BEAT_splitter.pl to break up large short read files prior to assembling your reads to a reference genome, provided you have a cluster capable of running multiple simultaneous instances of BWA mem/samtools.
+
 ##############################
 # Basic Usage instructions ##
 ##############################
@@ -156,14 +164,6 @@ Order|Name|Example
 Subscript used to batch-process the creation of BLAST+ databases with the makeblastdb utility.
 ###Usage:
 `perl Streamline_FormatDB.pl [name of file to be databased]`
-
-###################################
-# Compatibility and Optimization #
-###################################
-
-The BEAT suite is optimized for use on a linux cluster running the TORQUE Resource Manager (http://www.adaptivecomputing.com/products/open-source/torque/), but it can be run on a multithreading-capable local linux or unix system as well. To determine if you are using a system with the TORQUE Resource Manager installed, enter the command "qstat" in the terminal; if a list of running and queued jobs is returned, you are. This package is accompanied by a template file ("template_qsub.qsub"), which you may use, modify or replace to alter the default settings of each subdivided job. If you would like to adapt BEAT for other resource management systems, there is a built-in switch called "$type" in BEAT_MAIN.pl which has only one option at present ("qsub"); adding another option that mimicks the use of "$type" along with a system-specific template file in place of "template_qsub.qsub" should enable relatively easy conversion.   
-
-BEAT is designed to intake FASTQ-formatted paired-end reads of indeterminate length, but a key strength of the pipeline is its ability to paralellize jobs to maximize efficiency. We therefore recommend that you use BEAT_splitter.pl to break up large short read files prior to assembling your reads to a reference genome, provided you have a cluster capable of running multiple simultaneous instances of BWA mem/samtools.
 
 ##############################
 # Entrez Direct Integration ##
