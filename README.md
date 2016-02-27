@@ -94,7 +94,7 @@ FLAG|EXAMPLE|DEFAULT|DESCRIPTION
 
 ###Example run walkthorugh
 
-Included in the BEAT github repository are a set of example files to demonstrate a properly set up run on the BEAT_fast track. Everything needed to run the pipeline is in there except for a reference genome, which for these data can be retrived from [here](https://www.ncbi.nlm.nih.gov/nuccore/568815589?report=fasta). The demo short read files are a greatly subsetted group of reads from an aye-aye sequence repository (SRA066444; Perry *et al.*, 2012) that been spiked with reads that match to the human TMC1 orthologue in a previous run of BLAST+. To modify or inspect the parameters of the job, simply opne the Demo_Master.qsub file in a text editor. Two parameters need to be changed in the example job file: your username, after the `-usr` flag, and the name of the reference you download after the `-ref` flag. To run the job, simply enter `qsub Demo_Master.qsub` on a TORQUE queue manager compliant system.
+Included in the BEAT github repository are a set of example files to demonstrate a properly set up run on the BEAT_fast track. Everything needed to run the pipeline is in there except for a reference genome, which for these data can be retrived from [here](https://www.ncbi.nlm.nih.gov/nuccore/568815589?report=fasta). The demo short read files are a greatly subsetted group of reads from an aye-aye sequence repository (SRA066444; Perry *et al.*, 2012) that been spiked with reads that match to the human TMC1 orthologue in a previous run of BLAST+. To modify or inspect the parameters of the job, simply open the "Demo_Master.qsub" file in a text editor. Two parameters need to be changed in the example job file: your username, after the `-usr` flag, and the name of the reference you download after the `-ref` flag. To run the job, simply enter `qsub Demo_Master.qsub` on a TORQUE queue manager compliant system.
 
 ##BEAT_consensus.pl usage:
 
@@ -257,6 +257,6 @@ Example:
 
 Ref name|Ref Coord|Ref ID|Read Depth|Read ID|Read Quality
 :----------:|:------:|:---:|:---:|:---------:|:-----------:
-scaffold_774	72731	G	9	..,,,,,,.	FFHHH@HH6
-scaffold_774	72732	T	9	GGgggg,gG	HFHHHEHH6
+scaffold_774|72731|G|9|..,,,,,,.|FFHHH@HH6
+scaffold_774|72732|T|9|GGgggg,gG|HFHHHEHH6
 
