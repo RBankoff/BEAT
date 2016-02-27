@@ -204,10 +204,10 @@ a text-based format for storing read sequences along with their PHRED-formatted 
 
 Example:
 
->`@SEQ_ID`
->`ACGTCCTGACACTGATGTATGCCACAATGTAACGTCCTGACACTGATGTATGCCACAATGTA`
->`+`
->`!!''(%%%+*******!!$$CCGF928))))))'''!*.15HHHHHH(H!!!$%$$!'',.$`
+`@SEQ_ID
+ACGTCCTGACACTGATGTATGCCACAATGTAACGTCCTGACACTGATGTATGCCACAATGTA
++
+!!''(%%%+*******!!$$CCGF928))))))'''!*.15HHHHHH(H!!!$%$$!'',.$`
 
 ###.qsub: 
 A generic suffix to denote a script that is meant to be queued by the TORQUE Resource Management system.
