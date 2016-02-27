@@ -196,8 +196,9 @@ a text-based format for representing nucleotide sequences.
 
 Example:
 
->`>GENE_NAME`
->`ACGTCCTGACACTGATGTATGCCACAATGTAACGTCCTGACACTGATGTATGCCACAATGTA`
+`>GENE_NAME
+
+ACGTCCTGACACTGATGTATGCCACAATGTAACGTCCTGACACTGATGTATGCCACAATGTA`
 
 ###.fq/.fastq: 
 a text-based format for storing read sequences along with their PHRED-formatted quality scores.
@@ -205,8 +206,11 @@ a text-based format for storing read sequences along with their PHRED-formatted 
 Example:
 
 `@SEQ_ID
+
 ACGTCCTGACACTGATGTATGCCACAATGTAACGTCCTGACACTGATGTATGCCACAATGTA
+
 +
+
 !!''(%%%+*******!!$$CCGF928))))))'''!*.15HHHHHH(H!!!$%$$!'',.$`
 
 ###.qsub: 
