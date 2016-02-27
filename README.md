@@ -196,9 +196,9 @@ a text-based format for representing nucleotide sequences.
 
 Example:
 
-`>GENE_NAME
+`>GENE_NAME`
 
-ACGTCCTGACACTGATGTATGCCACAATGTAACGTCCTGACACTGATGTATGCCACAATGTA`
+`ACGTCCTGACACTGATGTATGCCACAATGTAACGTCCTGACACTGATGTATGCCACAATGTA`
 
 ###.fq/.fastq: 
 a text-based format for storing read sequences along with their PHRED-formatted quality scores.
