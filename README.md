@@ -46,7 +46,7 @@ BEAT is designed to intake FASTQ-formatted paired-end reads of indeterminate len
 ##############################
 
 ##BEAT.pl
-To use BEAT in the interactive mode, simply enter “perl BEAT.pl [program name]” into a bash terminal in the working directory. Available programs are as follows:
+To use BEAT in the interactive mode, simply enter `perl BEAT.pl [program name]` into a bash terminal in the working directory. Available programs are as follows:
 
 Program name|DESCRIPTION
 :-----:|:----------:
