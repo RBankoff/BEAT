@@ -27,7 +27,7 @@ if ($SRG =~ m/.gz/){
 
 }
 else{
-	$SR =~ s/.fastq//g;
+	#$SR =~ s/.fastq//g;
 	open($fh, sprintf("cat |", $SRG)) or die "Broken cat $!\n";
 	open ($fh2, "| makeblastdb -in - -title $SR -dbtype nucl -out $SR") or die "no piping formatdb!, $!\n";
 			
