@@ -45,7 +45,20 @@ BEAT is designed to intake FASTQ-formatted paired-end reads of indeterminate len
 # Basic Usage instructions ##
 ##############################
 
-To use BEAT in the interactive mode, simply enter “perl BEAT.pl” into a bash terminal in the working directory. For command-line instructions, the arguments and flags are detailed below.
+##BEAT.pl
+To use BEAT in the interactive mode, simply enter “perl BEAT.pl [program name]” into a bash terminal in the working directory. Available programs are as follows:
+
+Program name|DESCRIPTION
+:-----:|:----------:
+raw_fast|rapid extraction of targeted sequences from raw read files
+raw_complete|fully map read files to reference for random-access consensus generation
+entrez_fetch|retrieve full sequences from NCBI and generate coordinate files
+consensus|generate consensus sequences and associated data for user-specified genes
+batch|generate consensus sequences for large numbers of sequences in parallel
+split|break large short read files into properly associated subfiles for more efficient parallelization
+help|this menu
+
+For command-line instructions, the arguments and flags are detailed below.
 
 ##BEAT_assembly.pl usage:
 
