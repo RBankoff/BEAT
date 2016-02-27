@@ -195,32 +195,28 @@ BAM files are the binary versions of SAM files, and cannot be read by humans wit
 a text-based format for representing nucleotide sequences.
 
 Example:
-`>GENE_NAME`
 
+`>GENE_NAME`
 `ACGTCCTGACACTGATGTATGCCACAATGTAACGTCCTGACACTGATGTATGCCACAATGTA`
 
 ###.fq/.fastq: 
 a text-based format for storing read sequences along with their PHRED-formatted quality scores.
 
 Example:
+
 `@SEQ_ID`
-
 `ACGTCCTGACACTGATGTATGCCACAATGTAACGTCCTGACACTGATGTATGCCACAATGTA`
-
 `+`
-
 `!!''(%%%+*******!!$$CCGF928))))))'''!*.15HHHHHH(H!!!$%$$!'',.$`
 
 ###.qsub: 
 A generic suffix to denote a script that is meant to be queued by the TORQUE Resource Management system.
 
 Example:
+
 `#PBS -l walltime=4:00:00`
-
 `#PBS -l nodes=1:ppn=1`
-
 `#PBS -l pmem=2gb`
-
 `cd $PBS_O_WORKDIR`
 
 ###.sam: 
