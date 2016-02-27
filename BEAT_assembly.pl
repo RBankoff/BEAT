@@ -422,13 +422,15 @@ sub FAST_BLAST{
 			$l = $splt[0];
 		}
 		my @splitter = split (/\./, $revb1);
-		foreach $ln(@localnames){
-			if ($splitter[2] =~ /$ln/){
-				my $reverse_output = $ln . ".REVERSE.fastq";
-				`cat $revb1 >> $reverse_output `;
-				push @reverse_outs, $reverse_output;
-				last;
-			}
+        	my %split_hash = map { $_ => 1 }@splitter;
+                foreach $ln(@localnames){
+                        if (exists($split_hash{$ln})){
+                                my $reverse_output = $ln . ".REVERSE.fastq";
+                               	`cat $revb1 >> $reverse_output `;
+                               	push @reverse_outs, $reverse_output;
+                               	last;
+                        }
+
 =pod
 			else{
 				shift @localnames;
@@ -445,13 +447,14 @@ sub FAST_BLAST{
 			$l = $splt[0];
 		}
 		my @splitter = split (/\./, $blf1);
-		foreach $ln(@localnames){
-			if ($splitter[2] =~ /$ln/){
-				my $forward_output = $ln . ".FORWARD.fastq";
-				`cat $blf1 >> $forward_output `;
-				push @forward_outs, $forward_output;
-				last;
-			}
+                my %split_hash = map { $_ => 1 }@splitter;
+                foreach $ln(@localnames){
+                        if (exists($split_hash{$ln})){
+                                my $forward_output = $ln . ".FORWARD.fastq";
+                                `cat $blf1 >> $forward_output `;
+                                push @forward_outs, $forward_output;
+                                last;
+                        }
 =pod
 			else{
 				shift @localnames;
