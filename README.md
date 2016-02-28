@@ -66,10 +66,6 @@ For command-line instructions, the arguments and flags are detailed below.
 
 ### Arguments must be given in order:
 
-arg1: number of queries for BEAT_fast; if using BEAT_complete, enter 1 
-
-arg2: number of paired-end short-read files (2 minimum)
-
 ORDER|NAME|EXAMPLE|DESCRIPTION
 :---:|:--------:|:------:|:--------------:
 1|Number of queries|4|	 number of queries for BEAT_fast; if using BEAT_complete, enter 1
