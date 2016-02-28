@@ -78,7 +78,7 @@ FLAG | EXAMPLE | DESCRIPTION
 -sr| SR_1_1.fastq SR_1_2.fastq |filenames of FASTQ-formatted paired-end short-read files 
  | OR |
 -list |	List_of_SR_files.txt |filename of list of short-reads in local directory 
--query|	Query1.fa Query2.fa |filename(s) of 
+-query|	Query1.fa Query2.fa |filename(s) of homologous query sequences for BEAT_fast
  | OR |
 -querylist | List_of_query_files.fa |filename of list of queries in local directory 
 -usr | abc123 |cluster-recognized username for qsubbing (TORQUE) clusters 
