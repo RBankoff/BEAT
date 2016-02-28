@@ -123,7 +123,7 @@ ORDER|NAME|EXAMPLE|DESCRIPTION
 3|Outfile|Out_folder|suffix to be added to query name for results directory
 4|Reference|hg38.fa|FASTA-formatted reference 
 
-####NOTE: Unlike BEAT_assembly.pl, BEAT_consensus.pl can be run either locally or as a qsub job without issue.
+NOTE: Unlike BEAT_assembly.pl, BEAT_consensus.pl can be run either locally or as a qsub job without issue.
 
 ###########################
 # BEAT formatting scripts #
@@ -142,7 +142,7 @@ ORDER|NAME|EXAMPLE|DESCRIPTION
 3|Outfile|Out_list.txt|name of file containing the split short read file names
 4|Split value|15000000|optional: number of FASTQ-formatted lines in each daughter file
 
-####NOTE: 1 GB is approximately 15,313,576 lines; if you do not enter a 4th argument, this is the value that will be used
+NOTE: 1 GB is approximately 15,313,576 lines; if you do not enter a 4th argument, this is the value that will be used
 
 ##blast2fq.pl/fqselect.pl
 ###Purpose: 
@@ -206,7 +206,7 @@ This will produce a listfile in the format needed by BEAT_consensus.pl to genera
 BAM files are the binary versions of SAM files, and cannot be read by humans without being passed through the samtools view interpreter.
 
 ###.fa/.fasta: 
-a text-based format for representing nucleotide sequences.
+A text-based format for representing nucleotide sequences.
 
 Example:
 
@@ -215,7 +215,7 @@ Example:
 `ACGTCCTGACACTGATGTATGCCACAATGTAACGTCCTGACACTGATGTATGCCACAATGTA`
 
 ###.fq/.fastq: 
-a text-based format for storing read sequences along with their PHRED-formatted quality scores.
+A text-based format for storing read sequences along with their PHRED-formatted quality scores.
 
 Example:
 
