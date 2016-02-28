@@ -62,13 +62,18 @@ For command-line instructions, the arguments and flags are detailed below.
 
 ##BEAT_assembly.pl usage:
 
-`perl BEAT_assembly.pl [arg1] [arg2] [mandatory flags] <optional flags>`
+`perl BEAT_assembly.pl [1] [2] [mandatory flags] <optional flags>`
 
 ### Arguments must be given in order:
 
 arg1: number of queries for BEAT_fast; if using BEAT_complete, enter 1 
 
 arg2: number of paired-end short-read files (2 minimum)
+
+ORDER|NAME|EXAMPLE|DESCRIPTION
+:---:|:--------:|:------:|:--------------:
+1|Number of queries|4|	 number of queries for BEAT_fast; if using BEAT_complete, enter 1
+2|Number of read files|10|number of paired-end short-read files (2 minimum)
 
 ###Mandatory flags; these must be given, but order doesn’t matter
 
@@ -107,7 +112,7 @@ FLAG|EXAMPLE|DEFAULT|DESCRIPTION
 
 ###Example run walkthorugh
 
-Included in the BEAT github repository are a set of example files to demonstrate a properly set up run on the BEAT_fast track. Everything needed to run the pipeline is in there except for a reference genome, which for these data can be retrived from [here](https://www.ncbi.nlm.nih.gov/nuccore/568815589?report=fasta). The demo short read files are a greatly subsetted group of reads from an aye-aye sequence repository (SRA066444; Perry *et al.*, 2012) that been spiked with reads that match to the human TMC1 orthologue in a previous run of BLAST+. To modify or inspect the parameters of the job, simply open the "Demo_Master.qsub" file in a text editor. Two parameters need to be changed in the example job file: your username, after the `-usr` flag, and the name of the reference you download after the `-ref` flag. To run the job, simply enter `qsub Demo_Master.qsub` on a TORQUE queue manager compliant system.
+Included in the BEAT github repository are a set of example files to demonstrate a properly set up run on the BEAT_fast track. Everything needed to run the pipeline is in there except for a reference genome, which for these data can be retrived from [here](https://www.ncbi.nlm.nih.gov/nuccore/568815589?report=fasta). The demo short read files are a greatly subsetted group of reads from an aye-aye sequence repository (SRA066444; Perry *et al.*, 2012) that been spiked with reads that match to the human TMC1 orthologue in a previous run of BLAST+. To modify or inspect the parameters of the job, simply open the "Demo_Master.qsub" file in a text editor. Two parameters need to be changed in the example job file: your username, after the `-usr` flag, and the name of the reference you download after the `-ref` flag. To run the job after inserting the correct data for these fields, enter `qsub Demo_Master.qsub` on a TORQUE queue manager compliant system.
 
 ##BEAT_consensus.pl usage:
 
@@ -130,7 +135,7 @@ ORDER|NAME|EXAMPLE|DESCRIPTION
 
 ##BEAT_splitter.pl
 ###Purpose: 
-A script to subdivide FASTQ files over 2GB into smaller chunks (default 1GB) that can be run in parallel. After subdivision, BEAT_splitter.pl outputs a properly formatted file listing the subdivisions to be input using the BEAT_MAIN.pl --list option. 
+A script to subdivide FASTQ files over 2GB into smaller chunks (default 1GB) that can be run in parallel. After subdivision, BEAT_splitter.pl outputs a properly formatted file listing the subdivisions to be input using the BEAT_MAIN.pl -list option. 
 ###Usage: 
 `perl BEAT_splitter.pl [1] [2] [3] <4>`
 
@@ -170,7 +175,7 @@ Order|Name|Example
 1|FASTA file name| TMC1.fasta
 2|Chromosome name| 9
 3|Mpileup file name| TMC1.mpileup
-5|Outfolder prefix| TMC1 
+4|Outfolder prefix| TMC1 
 
 ##Streamline_formatDB.pl
 ###Purpose:
@@ -245,13 +250,13 @@ Samtools alignment specification, see (https://samtools.github.io/hts-specs/SAMv
 ##BEAT-specific formats:
 
 ###Listfile format:
-The listfile for BEAT_consensus [arg1] is an internal file which can be generated automatically by using the Entrez_fetch.pl script (see above), or can be created manually with the following format, where each field is separated by a tab:
+The listfile for BEAT_consensus [1] is an internal file which can be generated automatically by using the Entrez_fetch.pl script (see above), or can be created manually with the following format, where each field is separated by a tab:
 
 Field 1|Field 2|Field 3|Field 4
 :---------:|:-------:|:---------:|:---------:
 name of .gbl file|chromosome/scaffold name|start coordinates along chromosome/scaffold|end coordinates along chromosome/scaffold
 
-####NOTE: for “targeted” track jobs, input 1 for field [3] and the length of the sequence for field [4].
+####NOTE: for “targeted” track jobs, input 1 for field 3 and the length of the sequence for field 4.
 
 
 ###.mapping_script: 
