@@ -48,7 +48,7 @@ BEAT is designed to intake FASTQ-formatted paired-end reads of indeterminate len
 ##BEAT.pl
 To use BEAT in the interactive mode, simply enter `perl BEAT.pl [program name]` into a bash terminal in the working directory. Available programs are as follows:
 
-Program name|DESCRIPTION
+PROGRAM|DESCRIPTION
 :-----:|:----------:
 raw_fast|rapid extraction of targeted sequences from raw read files
 raw_complete|fully map read files to reference for random-access consensus generation
@@ -135,7 +135,7 @@ A script to subdivide FASTQ files over 2GB into smaller chunks (default 1GB) tha
 ###Usage: 
 `perl BEAT_splitter.pl [1] [2] [3] <4>`
 
-Order|Name|Example|Description
+ORDER|NAME|EXAMPLE|DESCRIPTION
 :---:|:--------:|:------:|:--------------:
 1|Short read list|List.txt|short reads to be split in a newline-delimited file 
 2|Job name|Monday_map|name of prefix to be associated with the split files 
@@ -151,7 +151,7 @@ A pair of scripts that reassociate sequence data from reads matched to the seque
 ###Usage: 
 `perl blast2fq.pl [1] [2] [3] [4] [5]`
 
-Order|Name|Example
+ORDER|NAME|EXAMPLE
 :---:|:------:|:------------:
 1|Blast results filename| file.blast
 2|Minimum score| 50
@@ -166,7 +166,7 @@ Generates the actual consensus sequences produced from samtools mpileup data, ha
 ###Usage:
 `perl Consensus_mpileup.pl [1] [2] [3] [4]`
 
-Order|Name|Example
+ORDER|NAME|EXAMPLE
 :---:|:------:|:------------:
 1|FASTA file name| TMC1.fasta
 2|Chromosome name| 9
@@ -187,7 +187,7 @@ BEAT uses the Entrez Direct suite of tools from the National Center for Biotechn
 
 `perl Entrez_fetch.pl [1] [2] [3]`
 
-Order|Name|Example
+ORDER|NAME|EXAMPLE
 :---:|:------:|:------------:
 1|Gene symbol (NCBI)| TMC1
 2|Generic/species name| Homo
@@ -248,7 +248,7 @@ Samtools alignment specification, see (https://samtools.github.io/hts-specs/SAMv
 ###Listfile format:
 The listfile for BEAT_consensus [1] is an internal file which can be generated automatically by using the Entrez_fetch.pl script (see above), or can be created manually with the following format, where each field is separated by a tab:
 
-Field 1|Field 2|Field 3|Field 4
+FIELD 1|FIELD 2|FIELD 3|FIELD 4
 :---------:|:-------:|:---------:|:---------:
 name of .gbl file|chromosome/scaffold name|start coordinates along chromosome/scaffold|end coordinates along chromosome/scaffold
 
@@ -269,7 +269,7 @@ The position-wise mapping scores from samtools mpileup used by BEAT_consensus to
 
 Example:
 
-Ref name|Ref Coord|Ref ID|Read Depth|Read ID|Read Quality
+REF NAME|REF COORD|REF ID|READ DEPTH|READ ID|READ QUALITY
 :----------:|:------:|:---:|:---:|:---------:|:-----------:
 scaffold_774|72731|G|9|..,,,,,,.|FFHHH@HH6
 scaffold_774|72732|T|9|GGgggg,gG|HFHHHEHH6
