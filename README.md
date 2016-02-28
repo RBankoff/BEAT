@@ -252,7 +252,7 @@ FIELD 1|FIELD 2|FIELD 3|FIELD 4
 :---------:|:-------:|:---------:|:---------:
 name of .gbl file|chromosome/scaffold name|start coordinates along chromosome/scaffold|end coordinates along chromosome/scaffold
 
-####NOTE: for “targeted” track jobs, input 1 for field 3 and the length of the sequence for field 4.
+NOTE: for “fast” track jobs, input 1 for field 3 and the length of the sequence for field 4.
 
 
 ###.mapping_script: 
