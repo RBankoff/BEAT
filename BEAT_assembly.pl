@@ -37,6 +37,7 @@ my $run_local = '';
 my $mode = '';
 my $list = '';
 my $species = '';
+my $querylist = '';
 
 #declare optional flags (defaults are preset if no input is registered)
 my $samtools_qflag = '';
@@ -61,10 +62,11 @@ GetOptions(
 	"job_name=s" => \$job_name,
 	"list=s" => \$list,
 	"sr=s{$numSR}" => \@SRs,
-	"species=s" => \$species
+	"species=s" => \$species,
+	"querylist=s" => \$querylist
 );
 
-=pod
+
 if($list){
 	open (LIST_FILE, "<", $list) or die "Couldn't open list file $list, $!\n";
 	while (my $line = <LIST_FILE>){
@@ -73,13 +75,17 @@ if($list){
 		push @SRs, $line;
 	}
 	close LIST_FILE;
-	foreach $S(@SRs){
-                my $presize = qx(ls -l $S);
-		my $size = (split (/\t/, $presize))[5]; 
-		#print "Size: $size\n";
-        }
 }
-=cut
+if($querylist){
+	open (QLIST_FILE, "<", $querylist) or die "Couldn't open query list file $querylist, $!\n";
+	while (my $line = <QLIST_FILE>){
+		chomp $line;
+		#print "LINE: $line\n";
+		push @query, $line;
+	}
+	close QLIST_FILE;
+}
+
 
 ################################
 ## Global variable initiation ##
