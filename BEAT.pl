@@ -60,10 +60,18 @@ elsif ($program =~ m/^raw/i){
 		}
 
 		elsif ($TORQUE =~ m/n/i){
+			print "Are you using GNU Parallel? (Y/n)\n";
+			my $GNU = <STDIN>;
+			chomp $GNU;
+			if ($GNU =~ m/y/i){
+				$QUEUE = "GNU";
+			}
+			else{
 			#for future use in developing alternate system calling strategies, modify this variable
-			print "Ok, we can try to work with that. Enter the command that you would use to submit a job to your cluster (e.g. qsub):\n"; 
-		 	$QUEUE = <STDIN>;
-			chomp $QUEUE;
+				print "Ok, we can try to work with that. Enter the command that you would use to submit a job to your cluster (e.g. qsub):\n"; 
+		 		$QUEUE = <STDIN>;
+				chomp $QUEUE;
+			}
 		}
 
 		print "Enter the names of the short read files you will be mapping today in the format SR1_1.fastq SR1_2.fastq..SRN_1.fastq SRN_2.fastq, or type \"list\" to enter the path to a file containing a list of your short reads. Reads must be paired-end; list forward and reverse reads back-to-back:\n";
